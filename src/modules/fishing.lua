@@ -22,6 +22,7 @@ local FISHING_SPELLS = {
 }
 
 local After = _G.C_Timer.After
+local GetCVar, SetCVar = _G.GetCVar, _G.SetCVar
 local InCombatLockdown = _G.InCombatLockdown
 local SetOverrideBinding = _G.SetOverrideBinding
 local ClearOverrideBindings = _G.ClearOverrideBindings
@@ -38,11 +39,11 @@ local function SetBinding(mode)
     if InCombatLockdown() then return end
     
     if mode == BINDINGS.INTERACT then
-        cachedInteract = _G.GetCVar(CVAR)
-        if cachedInteract ~= "3" then _G.SetCVar(CVAR, "3") end
+        cachedInteract = GetCVar(CVAR)
+        if cachedInteract ~= "3" then SetCVar(CVAR, "3") end
         SetOverrideBinding(frame, false, Module.Options:Get(K_FISHING), TARGET)
     else
-        if cachedInteract then _G.SetCVar(CVAR, cachedInteract) end
+        if cachedInteract then SetCVar(CVAR, cachedInteract) end
         SetOverrideBindingSpell(frame, false, Module.Options:Get(K_FISHING), SPELL_NAME)
     end
 end
