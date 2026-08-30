@@ -9,11 +9,7 @@ local UNIT = "player"
 local CVAR = "SoftTargetInteract"
 local TARGET = "INTERACTTARGET"
 local K_FISHING = "KEY_FISHING"
-local SPELL_NAME = _G.C_Spell.GetSpellName(131474)
-local BINDINGS = {
-    CAST = "CAST",
-    INTERACT = "INTERACT"
-}
+local SPELL_NAME = "SPELL " .. _G.C_Spell.GetSpellName(131474)
 local FISHING_SPELLS = {
     [131474] = true,
     [131476] = true,
@@ -26,7 +22,6 @@ local GetCVar, SetCVar = _G.GetCVar, _G.SetCVar
 local InCombatLockdown = _G.InCombatLockdown
 local SetOverrideBinding = _G.SetOverrideBinding
 local ClearOverrideBindings = _G.ClearOverrideBindings
-local SetOverrideBindingSpell = _G.SetOverrideBindingSpell
 
 local frame = _G.CreateFrame("Frame")
 local cachedInteract
@@ -35,16 +30,16 @@ local cachedInteract
 --  Local Functions
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-local function SetBinding(mode)
+local function SetBinding(interact)
     if InCombatLockdown() then return end
     
-    if mode == BINDINGS.INTERACT then
+    if interact then
         cachedInteract = GetCVar(CVAR)
         if cachedInteract ~= "3" then SetCVar(CVAR, "3") end
         SetOverrideBinding(frame, false, Module.Options:Get(K_FISHING), TARGET)
     else
         if cachedInteract then SetCVar(CVAR, cachedInteract) end
-        SetOverrideBindingSpell(frame, false, Module.Options:Get(K_FISHING), SPELL_NAME)
+        SetOverrideBinding(frame, false, Module.Options:Get(K_FISHING), SPELL_NAME)
     end
 end
 
@@ -57,12 +52,17 @@ function Module:OnEnable()
     self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
     self:RegisterEvent("PLAYER_REGEN_ENABLED")
 
-    SetBinding(BINDINGS.CAST)
+    SetBinding(false)
 end
 
 function Module:OnDisable()
     ClearOverrideBindings(frame)
     self:UnregisterAllEvents()
+
+    if cachedInteract then
+        SetCVar(CVAR, cachedInteract)
+        cachedInteract = nil
+    end
 end
 
 function Module:InjectOptions()
@@ -70,7 +70,7 @@ function Module:InjectOptions()
 end
 
 function Module:UNIT_SPELLCAST_CHANNEL_START(_, unit, _, spellID)
-    if unit == UNIT and FISHING_SPELLS[spellID] then SetBinding(BINDINGS.INTERACT) end
+    if unit == UNIT and FISHING_SPELLS[spellID] then SetBinding(true) end
 end
 
 function Module:UNIT_SPELLCAST_CHANNEL_STOP(_, unit, _, spellID)
@@ -78,5 +78,5 @@ function Module:UNIT_SPELLCAST_CHANNEL_STOP(_, unit, _, spellID)
 end
 
 function Module:PLAYER_REGEN_ENABLED()
-    SetBinding(BINDINGS.CAST)
+    SetBinding(false)
 end

@@ -12,7 +12,11 @@ local function BypassTimer(popup)
 end
 
 local function BypassEditBox(popup)
-    if popup:GetEditBox() then popup:GetEditBox():SetText(Module.L.DELETE_INPUT) end
+    if popup:GetButton1() then popup:GetButton1():Enable() end
+    if popup:GetEditBox() then
+        popup:GetEditBox():SetText(Module.L.DELETE_INPUT)
+        popup:GetEditBox():Disable()
+    end
 end
 
 local POPUPS = {
