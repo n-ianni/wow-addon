@@ -15,6 +15,7 @@ L["N_FISHING"]    = "Easy fishing"
 L["N_INDICATORS"] = "Frame indicators"
 L["N_MERCHANTS"]  = "Merchant interaction"
 L["N_POPUPS"]     = "Bypass popups"
+L["N_REMATCH"]    = "External Addon: Rematch crashing bug"
 L["N_TRACKERS"]   = "Untrack achievements"
 
 L["N_KEY_DEPOSIT"] = "Gold limit"
@@ -37,6 +38,7 @@ L["D_FISHING"]    = "Cast and reel in with a single keybind."
 L["D_INDICATORS"] = "Remove damage and healing indicators from the player and pet frames."
 L["D_MERCHANTS"]  = "Enable auto repair and auto sell junk options when interacting with a merchant."
 L["D_POPUPS"]     = "Bypass confirmation mechanisms for popups with text confirmation or countdown timers."
+L["D_REMATCH"]    = "Fix 'Rematch' addon crashing when the pet frame is opened. Bug introduced in patch 12.1."
 L["D_TRACKERS"]   = "Fix achievements getting stuck in the tracked state when completed by different characters."
 
 L["D_KEY_DEPOSIT"] = "The maximum amount of gold to keep per character."
@@ -49,7 +51,7 @@ L["D_KEY_SELL"]    = "Sell all junk items automatically."
 --  Module Categories (Settings menu)
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-L["C_ARTIFACTS"]  = "Legacy"
+L["C_ARTIFACTS"]  = "Bug fixes"
 L["C_BANKERS"]    = "General"
 L["C_CHARACTER"]  = "General"
 L["C_CINEMATICS"] = "General"
@@ -58,6 +60,7 @@ L["C_FISHING"]    = "General"
 L["C_INDICATORS"] = "General"
 L["C_MERCHANTS"]  = "General"
 L["C_POPUPS"]     = "General"
+L["C_REMATCH"]    = "Bug fixes"
 L["C_TRACKERS"]   = "General"
 
 -- ─────────────────────────────────────────────────────────────────────────────────
