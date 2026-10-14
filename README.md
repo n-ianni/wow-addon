@@ -6,7 +6,8 @@ A lightweight quality-of-life addon for World of Warcraft.
 
 ### Bug Fixes
 - Show the perks tab for Legion's Underlight Angler artifact
-- Automatically untrack completed achievements
+- Untrack completed achievements across characters
+- Fix Rematch addon crash when opening the pet panel (introduced in 12.1)
 
 ### NPC Interactions
 - Automatically deposit excess gold when visiting a banker
