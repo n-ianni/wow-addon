@@ -1,46 +1,25 @@
-# Compiled Lua sources
-luac.out
-
-# build folders
+# Build output (scripts/build.sh) and cached Ace3 clone (scripts/dependencies.sh)
 .build/
 
-# luarocks build files
-*.src.rock
+# Release artifacts
 *.zip
 *.tar.gz
 
-# Object files
-*.o
-*.os
-*.ko
-*.obj
-*.elf
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-*.def
-*.exp
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+# Local overrides (e.g. a personal WOW_PATH exported via a dotenv file)
+.env
+.env.*
 
 # OS files
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Lua tooling
+luac.out
+.luacheckcache

@@ -7,3 +7,7 @@ function addon:OnInitialize()
     self:CreateDatabase()
     self:CreateSettings()
 end
+
+function addon:OnEnable()
+    self:FinalizeSettings()
+end

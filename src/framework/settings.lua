@@ -1,36 +1,27 @@
 local addonName, ns = ...
 
 function ns.Addon:CreateSettings()
-    self._options = {
-        name = addonName,
-        type = "group",
-        args = {}
-    }
-
-    LibStub("AceConfig-3.0"):RegisterOptionsTable(addonName, self._options)
-    LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, addonName)
+    self._category = Settings.RegisterVerticalLayoutCategory(addonName)
+    self._subcategories = {}
 end
 
 function ns.Addon:RegisterModuleOptions(module)
-    local category = module._category
+    local name = module._category
+    local sub = self._subcategories[name]
 
-    if not self._options.args[category] then
-        self._options.args[category] = {
-            name = category,
-            type = "group",
-            args = {}
-        }
+    if not sub then
+        local category, layout = Settings.RegisterVerticalLayoutSubcategory(self._category, name)
+        sub = { category = category, layout = layout }
+        self._subcategories[name] = sub
     end
 
-    self._options.args[category].args[module:GetName()] = {
-        type = "group",
-        name = module._name,
-        desc = module._desc,
-        args = module.Options:GetOptions(),
-        inline = true,
-    }
+    module.Options:Build(sub.category, sub.layout)
+end
+
+function ns.Addon:FinalizeSettings()
+    Settings.RegisterAddOnCategory(self._category)
 end
 
 _G[addonName .. "_OnCompartmentClick"] = function()
-    LibStub("AceConfigDialog-3.0"):Open(addonName)
+    Settings.OpenToCategory(ns.Addon._category:GetID())
 end

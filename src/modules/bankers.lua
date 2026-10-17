@@ -9,6 +9,7 @@ local KEYS = { DEPOSIT = "KEY_DEPOSIT" }
 local BANK_TYPE = _G.Enum.BankType.Account
 
 local Bank = _G.C_Bank
+local Break = _G.BreakUpLargeNumbers
 local GetMoney = _G.GetMoney
 local GetMoneyString = _G.GetMoneyString
 
@@ -40,7 +41,9 @@ function Module:OnEnable() self:RegisterEvent("BANKFRAME_OPENED") end
 function Module:OnDisable() self:UnregisterAllEvents() end
 
 function Module:InjectOptions()
-    self.Options:AddInput(KEYS.DEPOSIT)
+    self.Options:AddSlider(KEYS.DEPOSIT, 0, 500000, 500, nil, function(value)
+        return Break(value) .. "g"
+    end)
 end
 
 function Module:BANKFRAME_OPENED()

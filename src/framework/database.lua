@@ -1,6 +1,6 @@
 local addonName, ns = ...
 
-local DB_NAME = "%s_DB"
+local DB_NAME = addonName .. "_DB"
 
 ns.Addon.defaults = {
     profile = {
@@ -14,7 +14,7 @@ ns.Addon.defaults = {
 
 function ns.Addon:CreateDatabase()
     self.db = LibStub("AceDB-3.0"):New(
-        DB_NAME:format(addonName:upper()),
+        DB_NAME:upper(),
         self.defaults,
         true
     )

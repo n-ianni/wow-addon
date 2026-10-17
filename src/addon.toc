@@ -1,15 +1,13 @@
 ## Interface: 120105
 
-## Title: A
+## Title: @ADDON_NAME@
 ## Version: @VERSION@
 ## Author: N. Ianni
 ## License: MIT
 
 ## IconTexture: 236701
-## SavedVariables: A_DB
-## AddonCompartmentFunc: A_OnCompartmentClick
-
-## OptionalDeps: Ace3
+## SavedVariables: @ADDON_NAME@_DB
+## AddonCompartmentFunc: @ADDON_NAME@_OnCompartmentClick
 
 # -------------------------------------------------------------------------------------------
 # DEPENDENCIES

@@ -1,0 +1,1 @@
+export ADDON_NAME="A"
