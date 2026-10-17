@@ -51,7 +51,7 @@ L["D_KEY_SELL"]    = "Sell all junk items automatically."
 --  Module Categories (Settings menu)
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-L["C_ARTIFACTS"]  = "Bug fixes"
+L["C_ARTIFACTS"]  = "Issue fix"
 L["C_BANKERS"]    = "General"
 L["C_CHARACTER"]  = "General"
 L["C_CINEMATICS"] = "General"
@@ -60,8 +60,8 @@ L["C_FISHING"]    = "General"
 L["C_INDICATORS"] = "General"
 L["C_MERCHANTS"]  = "General"
 L["C_POPUPS"]     = "General"
-L["C_REMATCH"]    = "Bug fixes"
-L["C_TRACKERS"]   = "General"
+L["C_REMATCH"]    = "Issue fix"
+L["C_TRACKERS"]   = "Issue fix"
 
 -- ─────────────────────────────────────────────────────────────────────────────────
 --  String Resources
