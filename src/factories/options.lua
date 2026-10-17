@@ -15,19 +15,22 @@ local NAME, DESC = "N_%s", "D_%s"
 --  Local Functions
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-local function CreateOption(db, key, type, custom)
+local function CreateOption(db, key, type, custom, onChange)
     local option = {
         type = type,
         name = L[NAME:format(key:upper())],
         desc = L[DESC:format(key:upper())],
 
         get = function() return db[key] end,
-        set = function(_, value) db[key] = value end,
+        set = function(_, value)
+            local old = db[key]
+            db[key] = value
+            if onChange then onChange(value, old) end
+        end,
         disabled = function() return key ~= "enabled" and not db.enabled end,
     }
 
     if custom then for k, v in pairs(custom) do option[k] = v end end
-
     return option
 end
 
@@ -77,7 +80,7 @@ function Options:AddInput(key)
     return self
 end
 
-function Options:AddKeybind(key)
-    self._options[key] = CreateOption(self.db, key, "keybinding")
+function Options:AddKeybind(key, onChange)
+    self._options[key] = CreateOption(self.db, key, "keybinding", nil, onChange)
     return self
 end
