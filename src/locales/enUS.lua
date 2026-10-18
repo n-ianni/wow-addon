@@ -17,6 +17,7 @@ L["N_MERCHANTS"]  = "Merchant interaction"
 L["N_POPUPS"]     = "Bypass popups"
 L["N_REMATCH"]    = "External Addon: Rematch crashing bug"
 L["N_TRACKERS"]   = "Untrack achievements"
+L["N_UNITTEXT"]   = "Unit frame text values"
 
 L["N_KEY_DEPOSIT"] = "Gold limit"
 L["N_KEY_FISHING"] = "Fishing interaction key"
@@ -40,6 +41,7 @@ L["D_MERCHANTS"]  = "Enable auto repair and auto sell junk options when interact
 L["D_POPUPS"]     = "Bypass confirmation mechanisms for popups with text confirmation or countdown timers."
 L["D_REMATCH"]    = "Fix 'Rematch' addon crashing when the pet frame is opened. Bug introduced in patch 12.1."
 L["D_TRACKERS"]   = "Fix achievements getting stuck in the tracked state when completed by different characters."
+L["D_UNITTEXT"]   = "Hide HP/Mana text values until a percentage threshold is reached."
 
 L["D_KEY_DEPOSIT"] = "The maximum amount of gold to keep per character."
 L["D_KEY_FISHING"] = "Keybind for casting the fishing rod and/or loot fished items."
@@ -63,6 +65,7 @@ L["C_MERCHANTS"]  = "General"
 L["C_POPUPS"]     = "General"
 L["C_REMATCH"]    = "Issue fix"
 L["C_TRACKERS"]   = "Issue fix"
+L["C_UNITTEXT"]   = "General"
 
 -- ─────────────────────────────────────────────────────────────────────────────────
 --  String Resources
