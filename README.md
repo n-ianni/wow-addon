@@ -54,6 +54,6 @@ For subsequent deployments, omit `full` if the `Ace3` libraries do not need to b
 bash scripts/deploy.sh
 ```
 
-## Resources
+### Resources
 
 - WoW API docs ([Wiki](https://warcraft.wiki.gg))
