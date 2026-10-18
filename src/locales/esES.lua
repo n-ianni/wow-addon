@@ -72,6 +72,8 @@ L["C_TRACKERS"]   = "General"
 
 L["CUTSCENE_SKIPPED"] = "Cinemática omitida"
 L["DELETE_INPUT"]     = "BORRAR"
+L["KEY_CAPTURE"]      = "Pulsa una tecla (ESC para cancelar, SUPR para borrar)"
+L["KEY_UNBOUND"]      = "Sin asignar"
 L["UNTRACK"]          = "Seguimiento cancelado"
 L["WB_DEPOSIT"]       = "Depósito bancario:"
 L["WB_ERROR"]         = "El banco de banda de guerra tiene problemas técnicos.\nSe ha omitido la interacción con el banco para evitar cualquier incidencia."

@@ -23,7 +23,8 @@ local function GetPage(self, name)
 end
 
 function ns.Addon:RegisterModuleOptions(module)
-    module.Options:Build(GetPage(self, module._category).category)
+    local page = GetPage(self, module._category)
+    module.Options:Build(page.category, page.layout)
 end
 
 function ns.Addon:FinalizeSettings()

@@ -70,6 +70,8 @@ L["C_TRACKERS"]   = "Issue fix"
 
 L["CUTSCENE_SKIPPED"] = "Cutscene skipped"
 L["DELETE_INPUT"]     = "DELETE"
+L["KEY_CAPTURE"]      = "Press a key (ESC to cancel, DEL to clear)"
+L["KEY_UNBOUND"]      = "Not bound"
 L["UNTRACK"]          = "Untracked"
 L["WB_DEPOSIT"]       = "Bank deposit:"
 L["WB_ERROR"]         = "The warband bank is experiencing technical difficulties.\nBank interaction's been omitted to prevent any issues."
