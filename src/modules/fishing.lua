@@ -8,7 +8,6 @@ local Module = ns.Addon:NewModule("FISHING", "AceEvent-3.0")
 local UNIT = "player"
 local CVAR = "SoftTargetInteract"
 local TARGET = "INTERACTTARGET"
-local K_FISHING = "KEY_FISHING"
 local SPELL_NAME = "SPELL " .. _G.C_Spell.GetSpellName(131474)
 local FISHING_SPELLS = {
     [131474] = true,
@@ -44,7 +43,7 @@ local function Update()
         cachedInteract = nil
     end
 
-    local key = Module.Options:Get(K_FISHING)
+    local key = Module.db.fishingKey
     if key and key ~= "" then
         SetOverrideBinding(frame, false, key, channeling and TARGET or SPELL_NAME)
     end
@@ -70,8 +69,8 @@ function Module:OnDisable()
     ClearOverrideBindings(frame)
 end
 
-function Module:InjectOptions()
-    self.Options:AddKeybind(K_FISHING, function()
+function Module:InjectOptions(options)
+    options:AddKeybind("fishingKey", function()
         if self:IsEnabled() then Update() end
     end)
 end

@@ -5,7 +5,6 @@ local Module = ns.Addon:NewModule("BANKERS", "AceEvent-3.0")
 --  Local Variables
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-local KEYS = { DEPOSIT = "KEY_DEPOSIT" }
 local BANK_TYPE = _G.Enum.BankType.Account
 
 local Bank = _G.C_Bank
@@ -40,13 +39,14 @@ end
 function Module:OnEnable() self:RegisterEvent("BANKFRAME_OPENED") end
 function Module:OnDisable() self:UnregisterAllEvents() end
 
-function Module:InjectOptions()
-    self.Options:AddSlider(KEYS.DEPOSIT, 0, 500000, 500, nil, function(value)
-        return Break(value) .. "g"
-    end)
+function Module:InjectOptions(options)
+    options:AddSlider("depositLimit", {
+        min = 0, max = 500000, step = 500,
+        default = 2500,
+        format = function(value) return BreakUpLargeNumbers(value) .. "g" end,
+    })
 end
 
 function Module:BANKFRAME_OPENED()
-    local deposit = self.Options:Get(KEYS.DEPOSIT)
-    if deposit then DepositFunds(deposit) end
+    DepositFunds(self.db.depositLimit)
 end

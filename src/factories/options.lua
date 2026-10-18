@@ -5,29 +5,17 @@ local Options = {}
 Options.__index = Options
 ns.Options = Options
 
-local NAME, DESC = "N_%s", "D_%s"
-
--- Looks up defaults.profile.modules[MODULE][key], then the ["*"] wildcard section.
-local function GetDefault(addon, moduleName, key, fallback)
-    local defaults = addon.defaults
-    local modules = defaults and defaults.profile and defaults.profile.modules
-    local value = modules and modules[moduleName] and modules[moduleName][key]
-    if value == nil then value = modules and modules["*"] and modules["*"][key] end
-    if value == nil then return fallback end
-    return value
+local function Text(key)
+    local label = "OPT_" .. key
+    return L[label], L[label .. "_DESC"]
 end
 
-local function Register(self, category, key, valueType, fallback, label)
-    local moduleName = self.module:GetName()
-    local variable = ("%s_%s_%s"):format(addonName, moduleName, key)
-    local default = GetDefault(self.addon, moduleName, key, fallback)
+local function Register(self, key, valueType, default, label)
+    local db = self.db
+    if db[key] == nil then db[key] = default end
 
-    -- The Settings UI reads straight from the table; a missing value breaks sliders.
-    if self.db[key] == nil then self.db[key] = default end
-
-    return Settings.RegisterAddOnSetting(
-        category, variable, key, self.db, valueType,
-        label or L[NAME:format(key:upper())], default)
+    local variable = ("%s_%s_%s"):format(addonName, self.module:GetName(), key)
+    return Settings.RegisterAddOnSetting(self.category, variable, key, db, valueType, label, default)
 end
 
 local function OnChange(setting, onChange)
@@ -36,138 +24,69 @@ local function OnChange(setting, onChange)
     end
 end
 
+local function Attach(self, initializer)
+    initializer:SetParentInitializer(self.parent, self.isEnabled)
+    return self
+end
 
--- ─────────────────────────────────────────────────────────────────────────────────
---  Key capture (the Settings UI has no keybinding control, so we roll a minimal one)
--- ─────────────────────────────────────────────────────────────────────────────────
+function Options:New(module, page, label, desc)
+    local db = module.db
+    local self = setmetatable({
+        module    = module,
+        db        = db,
+        category  = page.category,
+        layout    = page.layout,
+        isEnabled = function() return db.enabled end,
+    }, Options)
 
-local MODIFIER_KEYS = {
-    LSHIFT = true, RSHIFT = true, LCTRL = true, RCTRL = true,
-    LALT = true, RALT = true, LMETA = true, RMETA = true,
-}
-local KEY_CANCEL, KEY_CLEAR = "ESCAPE", "DELETE"
-
-local capture
-
-local function GetCapture()
-    if capture then return capture end
-
-    capture = CreateFrame("Frame", nil, UIParent)
-    capture:SetSize(420, 70)
-    capture:SetPoint("CENTER")
-    capture:SetFrameStrata("FULLSCREEN_DIALOG")
-    capture:EnableKeyboard(true)
-    capture:Hide()
-
-    local background = capture:CreateTexture(nil, "BACKGROUND")
-    background:SetAllPoints()
-    background:SetColorTexture(0, 0, 0, 0.85)
-
-    capture.text = capture:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-    capture.text:SetPoint("CENTER")
-    capture.text:SetText(L["KEY_CAPTURE"])
-
-    capture:SetScript("OnKeyDown", function(self, pressed)
-        if MODIFIER_KEYS[pressed] then return end
-        self:SetPropagateKeyboardInput(false)
-
-        local callback = self.callback
-        self:Hide()
-        if pressed == KEY_CANCEL or not callback then return end
-
-        if pressed == KEY_CLEAR then return callback("") end
-
-        local chord = (IsAltKeyDown() and "ALT-" or "")
-            .. (IsControlKeyDown() and "CTRL-" or "")
-            .. (IsShiftKeyDown() and "SHIFT-" or "")
-            .. pressed
-        callback(chord)
+    local setting = Register(self, "enabled", "boolean", false, label)
+    setting:SetValueChangedCallback(function(_, value)
+        if value then module:Enable() else module:Disable() end
     end)
-    capture:SetScript("OnHide", function(self) self.callback = nil end)
+    self.parent = Settings.CreateCheckbox(page.category, setting, desc)
 
-    return capture
-end
-
-local function CaptureKey(callback)
-    local frame = GetCapture()
-    frame.callback = callback
-    frame:Show()
-end
-
-function Options:Get(key) return self.db[key] end
-
-function Options:New(addon, module)
-    local object = setmetatable({}, Options)
-    object.db = addon.db.profile.modules[module:GetName()]
-    object.addon = addon
-    object.module = module
-    object._entries = {}
-
-    module:SetEnabledState(object.db.enabled)
-
-    return object
+    return self
 end
 
 function Options:AddToggle(key, onChange)
-    self._entries[#self._entries + 1] = function(category)
-        local setting = Register(self, category, key, "boolean", false)
-        OnChange(setting, onChange)
-        return Settings.CreateCheckbox(category, setting, L[DESC:format(key:upper())])
-    end
-    return self
+    local label, desc = Text(key)
+    local setting = Register(self, key, "boolean", false, label)
+    OnChange(setting, onChange)
+
+    return Attach(self, Settings.CreateCheckbox(self.category, setting, desc))
 end
 
-function Options:AddSlider(key, min, max, step, onChange, formatter)
-    self._entries[#self._entries + 1] = function(category)
-        local setting = Register(self, category, key, "number", min)
-        OnChange(setting, onChange)
+function Options:AddSlider(key, spec)
+    local label, desc = Text(key)
+    local setting = Register(self, key, "number", spec.default or spec.min, label)
+    OnChange(setting, spec.onChange)
 
-        local options = Settings.CreateSliderOptions(min, max, step)
-        options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, formatter)
+    local slider = Settings.CreateSliderOptions(spec.min, spec.max, spec.step)
+    slider:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, spec.format)
 
-        return Settings.CreateSlider(category, setting, options, L[DESC:format(key:upper())])
-    end
-    return self
+    return Attach(self, Settings.CreateSlider(self.category, setting, slider, desc))
 end
 
 function Options:AddKeybind(key, onChange)
-    self._entries[#self._entries + 1] = function(category, layout)
-        local function Label()
-            local value = self:Get(key)
-            return (value and value ~= "") and value or L["KEY_UNBOUND"]
-        end
+    local label, desc = Text(key)
+    local db = self.db
 
-        local initializer = CreateSettingsButtonInitializer(
-            L[NAME:format(key:upper())], Label(),
-            function(button)
-                CaptureKey(function(value)
-                    self.db[key] = value
-                    if type(button) == "table" and button.SetText then button:SetText(Label()) end
-                    if onChange then onChange(value) end
-                end)
-            end,
-            L[DESC:format(key:upper())], true)
-
-        layout:AddInitializer(initializer)
-        return initializer
+    local function Label()
+        local value = db[key]
+        return (value and value ~= "") and value or L["KEY_UNBOUND"]
     end
-    return self
-end
 
--- Module name [x]            <- the checkbox row is labelled with the module name
---     option                 <- indented children, greyed out while the module is disabled
-function Options:Build(category, layout)
-    local module, db = self.module, self.db
+    local initializer
+    initializer = CreateSettingsButtonInitializer(label, Label(), function(button)
+        ns.CaptureKey(function(value)
+            db[key] = value
+            button:SetText(Label())
+            initializer.data.buttonText = Label()
+            if onChange then onChange(value) end
+        end)
+    end, desc, true)
 
-    local enabled = Register(self, category, "enabled", "boolean", false, module._name)
-    enabled:SetValueChangedCallback(function(_, value)
-        if value then module:Enable() else module:Disable() end
-    end)
-    local parent = Settings.CreateCheckbox(category, enabled, module._desc)
-    local isEnabled = function() return db.enabled end
+    self.layout:AddInitializer(initializer)
 
-    for _, create in ipairs(self._entries) do
-        local child = create(category, layout)
-        if child.SetParentInitializer then child:SetParentInitializer(parent, isEnabled) end
-    end
+    return Attach(self, initializer)
 end

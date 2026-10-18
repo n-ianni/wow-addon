@@ -10,7 +10,6 @@ L["N_BANKERS"]    = "Warband bank deposit"
 L["N_CHARACTER"]  = "Improved character info"
 L["N_CINEMATICS"] = "Cinematic skip"
 L["N_CONTAINERS"] = "Sort bags"
-L["N_ENABLED"]    = "Enable"
 L["N_FISHING"]    = "Easy fishing"
 L["N_INDICATORS"] = "Frame indicators"
 L["N_MERCHANTS"]  = "Merchant interaction"
@@ -19,11 +18,11 @@ L["N_REMATCH"]    = "External Addon: Rematch crashing bug"
 L["N_TRACKERS"]   = "Untrack achievements"
 L["N_UNITTEXT"]   = "Unit frame text values"
 
-L["N_KEY_DEPOSIT"] = "Gold limit"
-L["N_KEY_FISHING"] = "Fishing interaction key"
-L["N_KEY_REPAIR_GUILD"]    = "Repair gear (guild)"
-L["N_KEY_REPAIR_PERSONAL"] = "Repair gear"
-L["N_KEY_SELL"]    = "Sell junk"
+L["OPT_depositLimit"]   = "Gold limit"
+L["OPT_fishingKey"]     = "Fishing interaction key"
+L["OPT_repairGuild"]    = "Repair gear (guild)"
+L["OPT_repairPersonal"] = "Repair gear"
+L["OPT_sell"]           = "Sell junk"
 
 -- ─────────────────────────────────────────────────────────────────────────────────
 --  Module/Settings Descriptions
@@ -34,7 +33,6 @@ L["D_BANKERS"]    = "Deposit any excess of gold on the warband bank account."
 L["D_CHARACTER"]  = "Display item levels, enchants, and gems on the character info panel."
 L["D_CINEMATICS"] = "Bypass the confirmation popup to skip cinematics."
 L["D_CONTAINERS"] = "Invert the player's bag sorting order."
-L["D_ENABLED"]    = "Enable module"
 L["D_FISHING"]    = "Cast and reel in with a single keybind."
 L["D_INDICATORS"] = "Remove damage and healing indicators from the player and pet frames."
 L["D_MERCHANTS"]  = "Enable auto repair and auto sell junk options when interacting with a merchant."
@@ -43,17 +41,17 @@ L["D_REMATCH"]    = "Fix 'Rematch' addon crashing when the pet frame is opened. 
 L["D_TRACKERS"]   = "Fix achievements getting stuck in the tracked state when completed by different characters."
 L["D_UNITTEXT"]   = "Hide HP/Mana text values until a percentage threshold is reached."
 
-L["D_KEY_DEPOSIT"] = "The maximum amount of gold to keep per character."
-L["D_KEY_FISHING"] = "Keybind for casting the fishing rod and/or loot fished items."
-L["D_KEY_REPAIR_GUILD"]    = "Attempt to use guild funds when repairing gear items automatically."
-L["D_KEY_REPAIR_PERSONAL"] = "Attempt to use personal funds when repairing gear items automatically."
-L["D_KEY_SELL"]    = "Sell all junk items automatically."
+L["OPT_depositLimit_DESC"]   = "The maximum amount of gold to keep per character."
+L["OPT_fishingKey_DESC"]     = "Keybind for casting the fishing rod and/or loot fished items."
+L["OPT_repairGuild_DESC"]    = "Attempt to use guild funds when repairing gear items automatically."
+L["OPT_repairPersonal_DESC"] = "Attempt to use personal funds when repairing gear items automatically."
+L["OPT_sell_DESC"]           = "Sell all junk items automatically."
 
 -- ─────────────────────────────────────────────────────────────────────────────────
 --  Module Categories (Settings menu)
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-L["C_ARTIFACTS"]  = "Issue fix"
+L["C_ARTIFACTS"]  = "Bug fixes"
 L["C_BANKERS"]    = "General"
 L["C_CHARACTER"]  = "General"
 L["C_CINEMATICS"] = "General"
@@ -63,8 +61,8 @@ L["C_GENERAL"]    = "General"
 L["C_INDICATORS"] = "General"
 L["C_MERCHANTS"]  = "General"
 L["C_POPUPS"]     = "General"
-L["C_REMATCH"]    = "Issue fix"
-L["C_TRACKERS"]   = "Issue fix"
+L["C_REMATCH"]    = "Bug fixes"
+L["C_TRACKERS"]   = "Bug fixes"
 L["C_UNITTEXT"]   = "General"
 
 -- ─────────────────────────────────────────────────────────────────────────────────
