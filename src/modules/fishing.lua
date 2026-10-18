@@ -70,9 +70,9 @@ function Module:OnDisable()
 end
 
 function Module:InjectOptions(options)
-    options:AddKeybind("fishingKey", function()
-        if self:IsEnabled() then Update() end
-    end)
+    options:AddKeybind("fishingKey", {
+        onChange = function() if self:IsEnabled() then Update() end end,
+    })
 end
 
 function Module:OnChannel(event, unit, _, spellID)

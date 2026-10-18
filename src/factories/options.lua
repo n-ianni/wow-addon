@@ -10,23 +10,18 @@ local function Text(key)
     return L[label], L[label .. "_DESC"]
 end
 
-local function Register(self, key, valueType, default, label)
+local function Register(self, key, valueType, default, label, onChange)
     local db = self.db
     if db[key] == nil then db[key] = default end
 
     local variable = ("%s_%s_%s"):format(addonName, self.module:GetName(), key)
-    return Settings.RegisterAddOnSetting(self.category, variable, key, db, valueType, label, default)
-end
+    local setting = Settings.RegisterAddOnSetting(self.category, variable, key, db, valueType, label, default)
 
-local function OnChange(setting, onChange)
     if onChange then
         setting:SetValueChangedCallback(function(_, value) onChange(value) end)
     end
-end
 
-local function Attach(self, initializer)
-    initializer:SetParentInitializer(self.parent, self.isEnabled)
-    return self
+    return setting
 end
 
 function Options:New(module, page, label, desc)
@@ -39,8 +34,7 @@ function Options:New(module, page, label, desc)
         isEnabled = function() return db.enabled end,
     }, Options)
 
-    local setting = Register(self, "enabled", "boolean", false, label)
-    setting:SetValueChangedCallback(function(_, value)
+    local setting = Register(self, "enabled", "boolean", false, label, function(value)
         if value then module:Enable() else module:Disable() end
     end)
     self.parent = Settings.CreateCheckbox(page.category, setting, desc)
@@ -48,26 +42,32 @@ function Options:New(module, page, label, desc)
     return self
 end
 
-function Options:AddToggle(key, onChange)
-    local label, desc = Text(key)
-    local setting = Register(self, key, "boolean", false, label)
-    OnChange(setting, onChange)
+-- Every Add* method takes (key, spec); spec is optional for toggles and keybinds.
+--   toggle:  { default = false, onChange = fn(value) }
+--   slider:  { min, max, step, default = min, format = fn(value), onChange = fn(value) }
+--   keybind: { onChange = fn(value) }
 
-    return Attach(self, Settings.CreateCheckbox(self.category, setting, desc))
+function Options:AddToggle(key, spec)
+    spec = spec or {}
+    local label, desc = Text(key)
+    local setting = Register(self, key, "boolean", spec.default or false, label, spec.onChange)
+    local initializer = Settings.CreateCheckbox(self.category, setting, desc)
+    initializer:SetParentInitializer(self.parent, self.isEnabled)
 end
 
 function Options:AddSlider(key, spec)
     local label, desc = Text(key)
-    local setting = Register(self, key, "number", spec.default or spec.min, label)
-    OnChange(setting, spec.onChange)
+    local setting = Register(self, key, "number", spec.default or spec.min, label, spec.onChange)
 
     local slider = Settings.CreateSliderOptions(spec.min, spec.max, spec.step)
     slider:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, spec.format)
 
-    return Attach(self, Settings.CreateSlider(self.category, setting, slider, desc))
+    local initializer = Settings.CreateSlider(self.category, setting, slider, desc)
+    initializer:SetParentInitializer(self.parent, self.isEnabled)
 end
 
-function Options:AddKeybind(key, onChange)
+function Options:AddKeybind(key, spec)
+    spec = spec or {}
     local label, desc = Text(key)
     local db = self.db
 
@@ -80,13 +80,15 @@ function Options:AddKeybind(key, onChange)
     initializer = CreateSettingsButtonInitializer(label, Label(), function(button)
         ns.CaptureKey(function(value)
             db[key] = value
-            button:SetText(Label())
-            initializer.data.buttonText = Label()
-            if onChange then onChange(value) end
+
+            local text = Label()
+            button:SetText(text)
+            initializer.data.buttonText = text
+
+            if spec.onChange then spec.onChange(value) end
         end)
     end, desc, true)
 
     self.layout:AddInitializer(initializer)
-
-    return Attach(self, initializer)
+    initializer:SetParentInitializer(self.parent, self.isEnabled)
 end

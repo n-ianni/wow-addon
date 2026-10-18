@@ -39,9 +39,8 @@ function Module:OnDisable() self:UnregisterAllEvents() end
 
 function Module:InjectOptions(options)
     options:AddSlider("depositLimit", {
-        min = 0, max = 500000, step = 500,
-        default = 2500,
-        format = function(value) return Break(value) .. "g" end,
+        min = 0, max = 500000, step = 500, default = 2500,
+        format = function(value) return BreakUpLargeNumbers(value) .. "g" end,
     })
 end
 
