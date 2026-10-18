@@ -1,21 +1,29 @@
 local addonName, ns = ...
+local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 
 function ns.Addon:CreateSettings()
-    self._category = Settings.RegisterVerticalLayoutCategory(addonName)
+    local category, layout = Settings.RegisterVerticalLayoutCategory(addonName)
+
+    self._category = category
+    self._root = { category = category, layout = layout }
     self._subcategories = {}
 end
 
-function ns.Addon:RegisterModuleOptions(module)
-    local name = module._category
-    local sub = self._subcategories[name]
+local function GetPage(self, name)
+    if name == L["C_GENERAL"] then return self._root end
 
-    if not sub then
+    local page = self._subcategories[name]
+    if not page then
         local category, layout = Settings.RegisterVerticalLayoutSubcategory(self._category, name)
-        sub = { category = category, layout = layout }
-        self._subcategories[name] = sub
+        page = { category = category, layout = layout }
+        self._subcategories[name] = page
     end
 
-    module.Options:Build(sub.category, sub.layout)
+    return page
+end
+
+function ns.Addon:RegisterModuleOptions(module)
+    module.Options:Build(GetPage(self, module._category).category)
 end
 
 function ns.Addon:FinalizeSettings()

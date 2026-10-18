@@ -5,21 +5,25 @@ A lightweight quality-of-life addon for World of Warcraft.
 ## Features
 
 ### Bug Fixes
+
 - Show the perks tab for Legion's Underlight Angler artifact
 - Untrack completed achievements across characters
 - Fix Rematch addon crash when opening the pet panel (introduced in 12.1)
 
 ### NPC Interactions
+
 - Automatically deposit excess gold when visiting a banker
 - Automatically repair when visiting a merchant
 - Automatically sell junk items when visiting a merchant
 
 ### UI Improvements
+
 - Display item level and enhancements on the character panel
 - Hide healing indicators on player and pet frames
 - Remove timer and typing restrictions from popups
 
 ### Quality of Life
+
 - Simplify cinematic skipping
 - Reverse container order
 - Cast fishing rods and reel in with a single button

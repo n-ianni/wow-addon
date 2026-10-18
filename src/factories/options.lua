@@ -7,23 +7,25 @@ ns.Options = Options
 
 local NAME, DESC = "N_%s", "D_%s"
 
--- Assumes your AceDB defaults follow defaults.profile.modules[MODULE][key]
 local function GetDefault(addon, moduleName, key, fallback)
     local defaults = addon.defaults
     local modules = defaults and defaults.profile and defaults.profile.modules
     local value = modules and modules[moduleName] and modules[moduleName][key]
+    if value == nil then value = modules and modules["*"] and modules["*"][key] end
     if value == nil then return fallback end
     return value
 end
 
-local function Register(self, category, key, valueType, fallback)
+local function Register(self, category, key, valueType, fallback, label)
     local moduleName = self.module:GetName()
     local variable = ("%s_%s_%s"):format(addonName, moduleName, key)
     local default = GetDefault(self.addon, moduleName, key, fallback)
 
+    if self.db[key] == nil then self.db[key] = default end
+
     return Settings.RegisterAddOnSetting(
         category, variable, key, self.db, valueType,
-        L[NAME:format(key:upper())], default)
+        label or L[NAME:format(key:upper())], default)
 end
 
 local function OnChange(setting, onChange)
@@ -68,12 +70,10 @@ function Options:AddSlider(key, min, max, step, onChange, formatter)
     return self
 end
 
-function Options:Build(category, layout)
+function Options:Build(category)
     local module, db = self.module, self.db
 
-    layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(module._name))
-
-    local enabled = Register(self, category, "enabled", "boolean", true)
+    local enabled = Register(self, category, "enabled", "boolean", false, module._name)
     enabled:SetValueChangedCallback(function(_, value)
         if value then module:Enable() else module:Disable() end
     end)
