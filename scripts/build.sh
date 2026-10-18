@@ -20,4 +20,4 @@ CORE="$(list core)" LOCALES="$(list locales)" FACTORIES="$(list factories)" \
 FRAMEWORK="$(list framework)" MODULES="$(list modules)" \
 perl -pe 's/\@(\w+)\@/$ENV{$1}/g' "$ROOT_DIR/src/addon.toc" > "$BUILD_DIR/$ADDON_NAME.toc"
 
-cp -R "$CACHE_DIR"/{LibStub,CallbackHandler-1.0,AceAddon-3.0,AceEvent-3.0,AceHook-3.0,AceDB-3.0,AceConfig-3.0,AceGUI-3.0,AceLocale-3.0} "$BUILD_DIR/Libs/"
+cp -R "$CACHE_DIR"/{LibStub,CallbackHandler-1.0,AceAddon-3.0,AceEvent-3.0,AceHook-3.0,AceDB-3.0,AceLocale-3.0} "$BUILD_DIR/Libs/"
