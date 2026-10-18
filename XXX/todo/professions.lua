@@ -1,1 +1,0 @@
-print("TODO: Show unspent profession skill points in badges.")
