@@ -64,7 +64,7 @@ L["C_INDICATORS"] = "General"
 L["C_MERCHANTS"]  = "General"
 L["C_POPUPS"]     = "General"
 L["C_REMATCH"]    = "Corrección de errores"
-L["C_TRACKERS"]   = "General"
+L["C_TRACKERS"]   = "Corrección de errores"
 
 -- ─────────────────────────────────────────────────────────────────────────────────
 --  String Resources
