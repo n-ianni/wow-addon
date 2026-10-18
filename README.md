@@ -36,7 +36,6 @@ A lightweight quality-of-life addon for World of Warcraft.
 - **Streamer mode:** Show pressed button icons and player stats. Dragable frames.
 - **Unit frame indicators:** Hide HP/mana text on frames when above a threshold.
 
-
 ## Development
 
 ### Deployment
