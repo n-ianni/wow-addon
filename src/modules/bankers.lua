@@ -21,7 +21,7 @@ local function DepositFunds(threshold)
         Module.Log:Error(Module.L.WB_ERROR)
         return
     end
-    
+
     local money = GetMoney()
     local limit = tonumber(threshold) * 10000 -- Gold to copper conversion
     local deposit = abs(money - limit)

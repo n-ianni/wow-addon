@@ -22,6 +22,6 @@ function Module:SkipCinematic(frame, key)
 
     if frame == MovieFrame then MovieFrame:StopMovie() end
     if frame == CinematicFrame then CinematicFrame_CancelCinematic() end
-    
+
     self.Log:Info(self.L.CUTSCENE_SKIPPED)
 end

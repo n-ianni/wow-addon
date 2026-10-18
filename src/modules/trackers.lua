@@ -25,7 +25,7 @@ function Module:PLAYER_ENTERING_WORLD(_, isInitialLogin)
 
     for _, id in ipairs(ContentTracking.GetTrackedIDs(ACHIEVEMENT)) do
         local completed = select(4, GetAchievementInfo(id))
-        
+
         if completed then
             ContentTracking.StopTracking(ACHIEVEMENT, id, COLLECTED)
             self.Log:Info(MSG:format(self.L.UNTRACK, id, GetAchievementLink(id)))

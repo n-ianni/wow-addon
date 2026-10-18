@@ -7,10 +7,9 @@ local Module = ns.Addon:NewModule("MERCHANTS", "AceEvent-3.0")
 
 local INTERACTION_TYPE = _G.Enum.PlayerInteractionType.Merchant
 
-local IsInGuild = _G.IsInGuild
 local RepairAllItems = _G.RepairAllItems
 local SellAllJunkItems = _G.C_MerchantFrame.SellAllJunkItems
-local CanGuildBankRepair = _G.CanGuildBankRepair
+local CanGuildBankRepair, CanMerchantRepair = _G.CanGuildBankRepair, _G.CanMerchantRepair
 
 -- ─────────────────────────────────────────────────────────────────────────────────
 --  Module Functions
@@ -25,10 +24,12 @@ function Module:InjectOptions(options)
     options:AddToggle("repairPersonal")
 end
 
-function Module:PLAYER_INTERACTION_MANAGER_FRAME_SHOW(_, type)
-    if type ~= INTERACTION_TYPE then return end
+function Module:PLAYER_INTERACTION_MANAGER_FRAME_SHOW(_, interactionType)
+    if interactionType ~= INTERACTION_TYPE then return end
 
     if self.db.sell then SellAllJunkItems() end
-    if self.db.repairGuild and CanGuildBankRepair() then RepairAllItems(true) end
-    if self.db.repairPersonal then RepairAllItems(false) end
+    if CanMerchantRepair() then
+        if self.db.repairGuild and CanGuildBankRepair() then RepairAllItems(true) end
+        if self.db.repairPersonal then RepairAllItems(false) end
+    end
 end
