@@ -16,19 +16,17 @@ local GetMoneyString = _G.GetMoneyString
 --  Local Functions
 -- ─────────────────────────────────────────────────────────────────────────────────
 
-local function DepositFunds(threshold)
+local function DepositFunds(gold)
     if not Bank.CanDepositMoney(BANK_TYPE) then
         Module.Log:Error(Module.L.WB_ERROR)
         return
     end
 
-    local money = GetMoney()
-    local limit = tonumber(threshold) * 10000 -- Gold to copper conversion
-    local deposit = abs(money - limit)
+    local excess = GetMoney() - gold * COPPER_PER_GOLD
 
-    if money > limit then
-        Bank.DepositMoney(BANK_TYPE, deposit)
-        Module.Log:Info(Module.L.WB_DEPOSIT, GetMoneyString(deposit, true))
+    if excess > 0 then
+        Bank.DepositMoney(BANK_TYPE, excess)
+        Module.Log:Info(Module.L.WB_DEPOSIT, GetMoneyString(excess, true))
     end
 end
 
