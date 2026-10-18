@@ -3,16 +3,12 @@ local addon = LibStub("AceAddon-3.0"):NewAddon(addonName)
 
 ns.Addon = addon
 
-local DEFAULTS = {
-    profile = {
-        modules = {
-            ["*"] = { enabled = false },
-        },
-    },
-}
-
 function addon:OnInitialize()
-    self.db = LibStub("AceDB-3.0"):New(addonName .. "_DB", DEFAULTS, true)
+    local name = addonName .. "_DB"
+
+    _G[name] = _G[name] or {}
+    self.db = _G[name]
+    self.db.modules = self.db.modules or {}
 end
 
 function addon:OnEnable()
