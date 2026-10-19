@@ -4,6 +4,7 @@ local _, ns = ...
 --  Local Variables
 -- ─────────────────────────────────────────────────────────────────────────────────
 
+local BADGE_SIZE = 20
 local EMPTY = ""
 
 local CreateFrame = _G.CreateFrame
@@ -61,6 +62,32 @@ function Frames:GetContainer(parent)
     frame.content = GetFontString(frame)
 
     frame.SetContent = SetText
+
+    return frame
+end
+
+local function SetCount(self, count)
+    if not count or count <= 0 then
+        self:Hide()
+        return
+    end
+
+    self.content:SetText(count)
+    self:SetWidth(math.max(BADGE_SIZE, self.content:GetStringWidth() + 8))
+    self:Show()
+end
+
+function Frames:GetBadge(parent)
+    local frame = CreateFrame("Frame", nil, parent)
+    frame:SetSize(BADGE_SIZE, BADGE_SIZE)
+    frame:Hide()
+
+    frame.bg = frame:CreateTexture(nil, "BACKGROUND")
+    frame.bg:SetAllPoints()
+    frame.bg:SetColorTexture(0, 0, 0, 0.75)
+
+    frame.content = GetFontString(frame)
+    frame.SetCount = SetCount
 
     return frame
 end

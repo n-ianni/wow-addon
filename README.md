@@ -21,6 +21,7 @@ A lightweight quality-of-life addon for World of Warcraft.
 - Display item level and enhancements on the character panel
 - Hide healing indicators on player and pet frames
 - Remove timer and typing restrictions from popups
+- Show unspent profession skill points in badges.
 
 ### Quality of Life
 
@@ -31,7 +32,6 @@ A lightweight quality-of-life addon for World of Warcraft.
 ## Backlog
 
 - **Notifications:** Notify of class-specific missing buffs (pets, buffs, perks [healthstones], etc).
-- **Profession knowledge:** Show unspent profession skill points in badges.
 - **Role highlight:** Show healer icon over players in PVP. Green tint for friendly players, red tint for enemies.
 - **Streamer mode:** Show pressed button icons and player stats. Dragable frames.
 - **Unit frame indicators:** Hide HP/mana text on frames when above a threshold.
