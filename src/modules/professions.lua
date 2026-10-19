@@ -1,6 +1,10 @@
 local _, ns = ...
 local Module = ns.Addon:NewModule("PROFESSIONS", "AceEvent-3.0", "AceHook-3.0")
 
+-- ─────────────────────────────────────────────────────────────────────────────────
+--  Local Variables
+-- ─────────────────────────────────────────────────────────────────────────────────
+
 local HOST = {
     addon  = "Blizzard_ProfessionsBook",
     frame  = "ProfessionsBookFrame",
